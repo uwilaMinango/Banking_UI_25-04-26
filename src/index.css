@@ -1,0 +1,242 @@
+/* ── STEP 1: LOAD THE FONT ───────────────────────────────────────────────── 
+   Downloads the Poppins font from Google so we can use it in the project.
+   This line must be at the very top, before anything else.
+   ───────────────────────────────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap");
+
+/* ── STEP 2: TURN ON TAILWIND ────────────────────────────────────────────── 
+   This one line switches Tailwind on. It replaces the old v3 way of doing
+   things which needed three separate lines:
+     @tailwind base
+     @tailwind components
+     @tailwind utilities
+   ───────────────────────────────────────────────────────────────────────── */
+@import "tailwindcss";
+
+/* ── STEP 3: YOUR CUSTOM TAILWIND SETTINGS ───────────────────────────────── 
+   This replaces the old tailwind.config.js file — no more config file needed.
+   Anything you put in here becomes a Tailwind class you can use in your JSX.
+
+   For example:
+     --color-primary  →  you can now write  bg-primary  or  text-primary
+     --font-poppins   →  you can now write  font-poppins
+     --breakpoint-xs  →  you can now write  xs:flex  or  xs:hidden
+   ───────────────────────────────────────────────────────────────────────── */
+@theme {
+  /* Your brand colors */
+  --color-primary: #00040f;         /* very dark navy — main background color */
+  --color-secondary: #00f6ff;       /* bright cyan — used for highlights */
+  --color-dimWhite: rgba(255, 255, 255, 0.7);  /* semi-transparent white */
+  --color-dimBlue: rgba(9, 151, 124, 0.1);     /* very faint teal */
+
+  /* Your custom font */
+  --font-poppins: "Poppins", sans-serif;  /* use font-poppins in your JSX */
+
+  /* Your custom screen sizes (breakpoints).
+     These replace Tailwind's default sm, md, lg etc. with your own sizes. */
+  --breakpoint-xs: 480px;   /* xs:  very small phones  */
+  --breakpoint-ss: 620px;   /* ss:  small phones        */
+  --breakpoint-sm: 768px;   /* sm:  tablets             */
+  --breakpoint-md: 1060px;  /* md:  small laptops       */
+  --breakpoint-lg: 1200px;  /* lg:  desktops            */
+  --breakpoint-xl: 1700px;  /* xl:  large screens       */
+}
+
+/* ── SHARED VALUES USED IN MULTIPLE PLACES ───────────────────────────────── 
+   These are just saved values (variables) we can reuse anywhere below.
+   Think of them like constants — change the value once, it updates everywhere.
+   These are NOT Tailwind classes. They are used with var() inside other rules.
+   ───────────────────────────────────────────────────────────────────────── */
+:root {
+  /* A dark gradient that goes white → grey → almost black.
+     Used as the hover background on feature and feedback cards. */
+  --black-gradient: linear-gradient(
+    144.39deg,
+    #ffffff -278.56%,
+    #6d6d6d -78.47%,
+    #11101d 91.61%
+  );
+
+  /* A soft shadow used under cards when hovered. */
+  --card-shadow: 0px 20px 100px -10px rgba(66, 71, 91, 0.1);
+}
+
+/* ── SMOOTH SCROLLING ────────────────────────────────────────────────────── 
+   Makes the page scroll smoothly when clicking anchor links,
+   instead of jumping instantly to that section.
+   ───────────────────────────────────────────────────────────────────────── */
+* {
+  scroll-behavior: smooth;
+}
+
+/* ── CUSTOM UTILITY CLASSES ──────────────────────────────────────────────── 
+   These work just like Tailwind classes — add them directly to any element
+   in your JSX e.g. <div className="text-gradient"> or <div className="box-shadow">
+
+   Putting them inside @layer utilities means Tailwind treats them as its own,
+   so they work nicely alongside all your other Tailwind classes.
+   ───────────────────────────────────────────────────────────────────────── */
+@layer utilities {
+
+  /* Makes text show a shiny cyan gradient colour instead of a solid colour.
+     Uses a background image clipped to the text shape to create the effect. */
+  .text-gradient {
+    background: radial-gradient(
+      64.18% 64.18% at 71.16% 35.69%,
+      #def9fa 0.89%,
+      #bef3f5 17.23%,
+      #9dedf0 42.04%,
+      #7de7eb 55.12%,
+      #5ce1e6 71.54%,
+      #33bbcf 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+  }
+
+  /* A cyan-to-teal gradient background, used on buttons and highlighted areas. */
+  .bg-blue-gradient {
+    background: linear-gradient(
+      157.81deg,
+      #def9fa -43.27%,
+      #bef3f5 -21.24%,
+      #9dedf0 12.19%,
+      #7de7eb 29.82%,
+      #5ce1e6 51.94%,
+      #33bbcf 90.29%
+    );
+  }
+
+  /* A dark gradient background that fades from near-white to almost black. */
+  .bg-black-gradient {
+    background: linear-gradient(
+      144.39deg,
+      #ffffff -278.56%,
+      #6d6d6d -78.47%,
+      #11101d 91.61%
+    );
+  }
+
+  /* Same dark gradient as above but flipped in the opposite direction. */
+  .bg-black-gradient-2 {
+    background: linear-gradient(
+      -168.39deg,
+      #ffffff -278.56%,
+      #6d6d6d -78.47%,
+      #11101d 91.61%
+    );
+  }
+
+  /* A gradient that fades from fully transparent to dark — great for overlays. */
+  .bg-gray-gradient {
+    background: linear-gradient(
+      153.47deg,
+      rgba(255, 255, 255, 0) -341.94%,
+      #14101d 95.11%
+    );
+  }
+
+  /* A dark charcoal gradient — used as the background for discount badges. */
+  .bg-discount-gradient {
+    background: linear-gradient(125.17deg, #272727 0%, #11101d 100%);
+  }
+
+  /* Adds a soft shadow under an element, the same shadow saved in --card-shadow above. */
+  .box-shadow {
+    box-shadow: 0px 20px 100px -10px rgba(66, 71, 91, 0.1);
+  }
+
+  /* A big blurry blue glow — purely decorative, placed behind hero content. */
+  .blue__gradient {
+    background: linear-gradient(180deg, rgba(188, 165, 255, 0) 0%, #214d76 100%);
+    filter: blur(123px);
+  }
+
+  /* A big blurry pink glow — decorative accent light in the background. */
+  .pink__gradient {
+    background: linear-gradient(90deg, #f4c4f3 0%, #fc67fa 100%);
+    filter: blur(900px);
+  }
+
+  /* A big blurry white glow — creates a soft light bloom in the background. */
+  .white__gradient {
+    background: rgba(255, 255, 255, 0.6);
+    filter: blur(750px);
+  }
+}
+
+/* ── CUSTOM COMPONENT CLASSES ────────────────────────────────────────────── 
+   These are more complex styles that affect how specific parts of the UI
+   look and behave. Unlike utilities above, these often include hover states
+   or target child elements.
+
+   Putting them inside @layer components means they load at the right time
+   and can still be overridden by Tailwind utility classes when needed.
+   ───────────────────────────────────────────────────────────────────────── */
+@layer components {
+
+  /* The mobile menu sidebar — plays the slide-up animation when it opens. */
+  .sidebar {
+    -webkit-animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  /* When a feature card is hovered, give it a dark gradient background and shadow. */
+  .feature-card:hover {
+    background: var(--black-gradient);
+    box-shadow: var(--card-shadow);
+  }
+
+  /* The last feedback card in a row should have no right margin (prevents overflow). */
+  .feedback-container .feedback-card:last-child {
+    margin-right: 0px;
+  }
+
+  /* Feedback cards start fully transparent so the page background shows through. */
+  .feedback-card {
+    background: transparent;
+  }
+
+  /* When a feedback card is hovered, reveal the dark gradient background. */
+  .feedback-card:hover {
+    background: var(--black-gradient);
+  }
+}
+
+/* ── ANIMATION: SLIDE UP ─────────────────────────────────────────────────── 
+   Defines the slide-top animation used by the .sidebar class above.
+   The element starts 100px below its normal position and slides up into place.
+
+   Two versions are written here:
+     @-webkit-keyframes  →  for older Safari and Chrome browsers
+     @keyframes          →  the modern standard version for all other browsers
+
+   These must live OUTSIDE of @layer blocks because CSS keyframes are always
+   global — they cannot be scoped to a layer.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Older browser version */
+@-webkit-keyframes slide-top {
+  0% {
+    -webkit-transform: translateY(100px);
+    transform: translateY(100px);   /* starts 100px below */
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);       /* ends in its normal position */
+  }
+}
+
+/* Modern browser version */
+@keyframes slide-top {
+  0% {
+    -webkit-transform: translateY(100px);
+    transform: translateY(100px);   /* starts 100px below */
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);       /* ends in its normal position */
+  }
+}
